@@ -63,7 +63,7 @@ if __name__ == '__main__':
     yf3 =  cdiff(yf2, Ts)
     
     x = np.c_[yf0, yf1, yf2]
-    thresh = 0.15
+    thresh = 0.25
     scale = 1 / (2.85 * thresh) ** 2
     centers = sel_centers(x, thresh)
     A = rbf_basis(centers, scale, x)
@@ -77,6 +77,7 @@ if __name__ == '__main__':
     weights = np.linalg.lstsq(A, fregul, rcond=None)[0]
 
     if args.save_rbf:
-        np.savez(
-            'rbf_guess', extrap=extrap, centers=centers,scale=scale, weights=weights
+        save_vars = dict(
+            extrap=extrap, centers=centers, scale=scale, weights=weights
         )
+        np.savez('rbf_guess', **save_vars)

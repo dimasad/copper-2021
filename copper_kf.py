@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import importlib
 
 import numpy as np
@@ -96,13 +98,13 @@ if __name__ == '__main__':
     model = sym_disc_mdl.compile_class()()
     
     params = dict(
-        g3=0.2, x1_meas_std=y_bitlen, dt=data['Ts'],
+        g3=0.05, x1_meas_std=y_bitlen, dt=data['Ts'],
     )
     for k,v in params.items():
         setattr(model, k, v)
 
-    x0 = x[start]
-    Px0 = np.diag([0.001, 0.001, 0.001]) ** 2
+    x0 = x[0]
+    Px0 = np.diag([8e-5, 2e-3, 2e-2])
     ukf = kalman.DTUnscentedFilter(model, x0, Px0)
     [xuf, Pxuf] = ukf.filter(y)
     
